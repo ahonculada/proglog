@@ -288,7 +288,7 @@ func testUnauthorized(
 	config *Config,
 ) {
 	ctx := context.Background()
-	product, err := client.Product(ctx,
+	produce, err := client.Produce(ctx,
 		&api.ProduceRequest{
 			Record: &api.Record{
 				Value: []byte("hello world"),

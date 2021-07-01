@@ -148,7 +148,7 @@ func authenticate(ctx context.Context) (context.Context, error) {
 	if !ok {
 		return ctx, status.New(
 			codes.Unknown,
-			"couldn't fund peer info",
+			"couldn't find peer info",
 		).Err()
 	}
 	if peer.AuthInfo == nil {
