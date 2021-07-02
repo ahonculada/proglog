@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"time"
 
 	api "github.com/ahonculada/proglog/api/v1"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
@@ -19,7 +20,9 @@ import (
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/peer"
 	"google.golang.org/grpc/status"
-	"time"
+
+	"google.golang.org/grpc/health"
+	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 )
 
 type Config struct {
@@ -84,6 +87,11 @@ func NewGRPCServer(config *Config, grpcOpts ...grpc.ServerOption) (*grpc.Server,
 		grpc.StatsHandler(&ocgrpc.ServerHandler{}),
 	)
 	gsrv := grpc.NewServer(grpcOpts...)
+
+	hsrv := health.NewServer()
+	hsrv.SetServingStatus("", healthpb.HealthCheckResponse_SERVING)
+	healthpb.RegisterHealthServer(gsrv, hsrv)
+
 	srv, err := newgrpcServer(config)
 	if err != nil {
 		return nil, err
