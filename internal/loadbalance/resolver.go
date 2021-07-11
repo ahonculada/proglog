@@ -1,3 +1,4 @@
+// START: resolver_type
 package loadbalance
 
 import (
@@ -22,6 +23,8 @@ type Resolver struct {
 	logger        *zap.Logger
 }
 
+// END: resolver_type
+// START: resolver_builder
 var _ resolver.Builder = (*Resolver)(nil)
 
 func (r *Resolver) Build(
@@ -60,6 +63,9 @@ func init() {
 	resolver.Register(&Resolver{})
 }
 
+// END: resolver_builder
+
+// START: resolver_resolver
 var _ resolver.Resolver = (*Resolver)(nil)
 
 func (r *Resolver) ResolveNow(resolver.ResolveNowOptions) {
@@ -100,3 +106,5 @@ func (r *Resolver) Close() {
 		)
 	}
 }
+
+// END: resolver_resolver
